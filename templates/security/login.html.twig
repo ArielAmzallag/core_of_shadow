@@ -1,0 +1,85 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Quantum Gateway Access{% endblock %}
+
+{% block stylesheets %}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital@0;1&family=UnifrakturMaguntia&display=swap');
+
+    .quantum-gateway {
+        margin: 2em auto;
+        max-width: 400px;
+        background: rgba(10, 10, 10, 0.95);
+        padding: 3em;
+        border: 1px solid #333;
+        box-shadow: 0 0 15px rgba(139, 0, 0, 0.3);
+    }
+
+    .gateway-title {
+        font-family: 'UnifrakturMaguntia', cursive;
+        color: #8b0000;
+        text-align: center;
+        font-size: 2em;
+        margin-bottom: 1.5em;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .form-group {
+        margin-bottom: 1.5em;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 0.8em;
+        background: rgba(20, 20, 20, 0.7);
+        border: 1px solid #333;
+        color: #d4d4d4;
+        font-family: 'Crimson Text', serif;
+    }
+
+    .quantum-submit {
+        width: 100%;
+        padding: 1em;
+        background: #8b0000;
+        color: #d4d4d4;
+        border: none;
+        font-family: 'Crimson Text', serif;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .quantum-submit:hover {
+        background: #660000;
+        box-shadow: 0 0 10px rgba(139, 0, 0, 0.5);
+    }
+
+    .error-message {
+        color: #8b0000;
+        text-align: center;
+        margin-bottom: 1em;
+        font-style: italic;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="quantum-gateway">
+    <h1 class="gateway-title">Quantum Gateway</h1>
+
+    {% if error %}
+        <script>
+            alert('Invalid quantum signature or temporal key. Access denied.');
+        </script>
+    {% endif %}
+    <form method="post">
+        <div class="form-group">
+            <input type="email" value="{{ last_username }}" name="email" class="form-control" placeholder="Quantum Signature (Email)" required autofocus>
+        </div>
+        <div class="form-group">
+            <input type="password" name="password" class="form-control" placeholder="Temporal Key (Password)" required>
+        </div>
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+        <button class="quantum-submit" type="submit">Enter the Void</button>
+    </form>
+</div>
+{% endblock %}

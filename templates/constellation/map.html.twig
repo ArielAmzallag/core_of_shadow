@@ -1,0 +1,116 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Quantum Bridge Network{% endblock %}
+
+{% block stylesheets %}
+<style>
+
+    body {
+        background-color: #1a1a1a !important;
+        background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%238b0000' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        color: #d4d4d4;
+    }
+    .constellation-map {
+        background: linear-gradient(45deg, #0a0a0a, #1a1a1a);
+        padding: 3em;
+        min-height: 800px;
+    }
+
+    .constellation-node {
+        fill: #ff2200;
+        r: 8;
+        filter: url(#enhancedGlow);
+        cursor: pointer;
+    }
+
+    .constellation-node:hover {
+        fill: #ff4400;
+        r: 12;
+        filter: url(#superGlow);
+    }
+
+    .quantum-bridge {
+        stroke: rgba(255, 34, 0, 0.4);
+        stroke-width: 2;
+    }
+
+    .quantum-bridge.active {
+        stroke: #ff4400;
+        stroke-width: 3;
+        filter: url(#enhancedGlow);
+    }
+
+    .node-label {
+        fill: #ff9966;
+        font-size: 16px;
+        font-family: 'UnifrakturMaguntia', cursive;
+    }
+
+    .constellation-title {
+        font-size: 32px;
+        fill: #ff2200;
+        filter: url(#titleGlow);
+    }
+</style>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+document.querySelectorAll('.constellation-node').forEach(node => {
+    node.addEventListener('click', function() {
+        const pattern = this.closest('.constellation-group').dataset.name;
+        window.location.href = `/constellation/${pattern}`;
+    });
+});
+</script>
+{% endblock %}
+
+{% block body %}
+<div class="constellation-map">
+    <svg width="800" height="600" viewBox="0 0 800 600">
+        <defs>
+            <filter id="glow">
+                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                <feMerge>
+                    <feMergeNode in="coloredBlur"/>
+                    <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+            </filter>
+        </defs>
+
+        <!-- Quantum Bridges -->
+        {% for name, data in constellations %}
+            {% for connection in data.connections %}
+                <line 
+                    class="quantum-bridge"
+                    x1="{{ data.coordinates.x }}"
+                    y1="{{ data.coordinates.y }}"
+                    x2="{{ constellations[connection].coordinates.x }}"
+                    y2="{{ constellations[connection].coordinates.y }}"
+                    data-frequency="{{ data.quantum_frequency }}"
+                />
+            {% endfor %}
+        {% endfor %}
+
+        <!-- Constellation Nodes -->
+        {% for name, data in constellations %}
+            <g class="constellation-group" data-name="{{ name }}">
+                <circle 
+                    class="constellation-node"
+                    cx="{{ data.coordinates.x }}"
+                    cy="{{ data.coordinates.y }}"
+                    r="10"
+                    data-power="{{ data.power_level }}"
+                />
+                <text 
+                    class="node-label"
+                    x="{{ data.coordinates.x + 15 }}"
+                    y="{{ data.coordinates.y + 5 }}"
+                >
+                    {{ name }} ({{ data.quantum_frequency }}Hz)
+                </text>
+            </g>
+        {% endfor %}
+    </svg>
+</div>
+{% endblock %}

@@ -1,0 +1,176 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Celestial Alignments{% endblock %}
+
+{% block stylesheets %}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital@0;1&family=UnifrakturMaguntia&display=swap');
+
+    body {
+        background-color: #1a1a1a !important;
+        background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%238b0000' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        color: #d4d4d4;
+    }
+
+    .constellation-reveal {
+        margin: 2em auto;
+        max-width: 800px;
+        width: 95%;
+        font-family: 'Crimson Text', serif;
+        background: rgba(10, 10, 10, 0.95);
+        padding: 3em;
+        border: 1px solid #333;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+        position: relative;
+    }
+
+    .constellation-name {
+        font-family: 'UnifrakturMaguntia', cursive;
+        color: #8b0000;
+        font-size: 2.2em;
+        text-align: center;
+        margin-bottom: 1em;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .celestial-coordinates {
+        font-family: monospace;
+        color: #a7a7a7;
+        text-align: center;
+        font-size: 1.2em;
+        letter-spacing: 0.2em;
+        margin-bottom: 2em;
+    }
+
+    .star-pattern {
+        display: flex;
+        justify-content: center;
+        gap: 1em;
+        margin: 2em 0;
+        font-family: 'UnifrakturMaguntia', cursive;
+        color: #8b0000;
+        font-size: 1.5em;
+    }
+
+    .revelation {
+        text-align: center;
+        font-style: italic;
+        color: #d4d4d4;
+        padding: 2em;
+        border-left: 2px solid #8b0000;
+        border-right: 2px solid #8b0000;
+        margin: 2em 0;
+        line-height: 1.8;
+    }
+
+    .quantum-metrics {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 2em;
+        padding-top: 2em;
+        border-top: 1px solid #333;
+    }
+
+    .entropy-level, .quantum-signature {
+        font-family: 'UnifrakturMaguntia', cursive;
+        color: #8b0000;
+        font-size: 1.3em;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="constellation-reveal">
+    {% if data %}
+        <h1 class="constellation-name">{{ data.name }}</h1>
+        <div class="celestial-coordinates">{{ data.coordinates }}</div>
+        
+        <div class="star-pattern">
+            {% for star in data.pattern %}
+                <span class="star">{{ star }}</span>
+            {% endfor %}
+        </div>
+
+        <div class="revelation">
+            {{ data.message }}
+        </div>
+
+        <div class="quantum-metrics">
+            <div class="entropy-level">
+                Entropy Level: {{ data.entropy_level }}
+            </div>
+            <div class="quantum-signature">
+                {{ data.quantum_signature }}
+            </div>
+        </div>
+    {% else %}
+        <div class="revelation">
+            The stars remain veiled...
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    class StarField {
+        constructor() {
+            this.canvas = document.createElement('canvas');
+            this.ctx = this.canvas.getContext('2d');
+            this.stars = [];
+            this.setupCanvas();
+            this.createStars(200);
+            this.animate();
+        }
+
+        setupCanvas() {
+            this.canvas.style.position = 'fixed';
+            this.canvas.style.top = '0';
+            this.canvas.style.left = '0';
+            this.canvas.style.width = '100%';
+            this.canvas.style.height = '100%';
+            this.canvas.style.zIndex = '-1';
+            document.body.prepend(this.canvas);
+            this.resize();
+            window.addEventListener('resize', () => this.resize());
+        }
+
+        resize() {
+            this.width = window.innerWidth;
+            this.height = window.innerHeight;
+            this.canvas.width = this.width;
+            this.canvas.height = this.height;
+        }
+
+        createStars(count) {
+            for(let i = 0; i < count; i++) {
+                this.stars.push({
+                    x: Math.random() * this.width,
+                    y: Math.random() * this.height,
+                    size: Math.random() * 2,
+                    speed: Math.random() * 0.5
+                });
+            }
+        }
+
+        animate() {
+            this.ctx.fillStyle = 'rgba(26, 26, 26, 0.2)';
+            this.ctx.fillRect(0, 0, this.width, this.height);
+            
+            this.stars.forEach(star => {
+                this.ctx.fillStyle = '#8b0000';
+                this.ctx.beginPath();
+                this.ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+                this.ctx.fill();
+                
+                star.y += star.speed;
+                if(star.y > this.height) star.y = 0;
+            });
+            
+            requestAnimationFrame(() => this.animate());
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => new StarField());
+</script>
+{% endblock %}

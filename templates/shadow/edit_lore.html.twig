@@ -1,0 +1,116 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Alter the Shadow Lore{% endblock %}
+
+{% block stylesheets %}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital@0;1&family=UnifrakturMaguntia&display=swap');
+
+    body {
+        background-color: #1a1a1a !important;
+        background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%238b0000' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+        color: #d4d4d4;
+    }
+
+    .shadow-realm-form {
+        margin: 2em auto;
+        max-width: 800px;
+        width: 95%;
+        font-family: 'Crimson Text', serif;
+        background: rgba(10, 10, 10, 0.95);
+        padding: 3em;
+        border: 1px solid #333;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+    }
+
+    .form-section {
+        margin-bottom: 2em;
+        padding: 1.5em;
+        border: 1px solid #333;
+        background: rgba(20, 20, 20, 0.7);
+    }
+
+    .form-section label {
+        color: #8b0000;
+        font-size: 1.1em;
+        margin-bottom: 0.5em;
+    }
+
+    .form-section input, .form-section textarea {
+        width: 100%;
+        padding: 0.8em;
+        background: rgba(30, 30, 30, 0.7);
+        border: 1px solid #444;
+        color: #d4d4d4;
+        font-family: 'Crimson Text', serif;
+    }
+
+    .metadata {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1em;
+    }
+
+    .classification {
+        border-left: 2px solid #8b0000;
+    }
+
+    .protocols {
+        border-right: 2px solid #8b0000;
+    }
+
+    button {
+        width: 100%;
+        padding: 1em;
+        background: #8b0000;
+        color: #d4d4d4;
+        border: 1px solid #333;
+        font-family: 'Crimson Text', serif;
+        font-size: 1.2em;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    button:hover {
+        background: #660000;
+        box-shadow: 0 0 10px rgba(139, 0, 0, 0.5);
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+    <div class="shadow-realm-form">
+        <h1>Alter Ancient Knowledge</h1>
+        
+        {{ form_start(form) }}
+            <div class="form-section primary-info">
+                {{ form_row(form.name) }}
+                {{ form_row(form.description) }}
+                {{ form_row(form.hiddenLore) }}
+            </div>
+            
+            <div class="form-section metadata">
+                {{ form_row(form.celestialCoordinates) }}
+                {{ form_row(form.quantumSignature) }}
+                {{ form_row(form.temporalFrequency) }}
+                {{ form_row(form.entropyLevel) }}
+            </div>
+            
+            <div class="form-section classification">
+                {{ form_row(form.dimensionalKey) }}
+                {{ form_row(form.classificationCode) }}
+                {{ form_row(form.discoveryDate) }}
+            </div>
+            
+            <div class="form-section protocols">
+                {{ form_row(form.containmentProtocol) }}
+                {{ form_row(form.realityAnchorPoint) }}
+            </div>
+            
+            <button type="submit">Reshape the Shadows</button>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

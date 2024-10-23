@@ -1,0 +1,91 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Initiation into the Void{% endblock %}
+
+{% block stylesheets %}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital@0;1&family=UnifrakturMaguntia&display=swap');
+
+        body {
+        background-color: #1a1a1a !important;
+        background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%238b0000' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        color: #d4d4d4;
+    }
+
+    .initiation-portal {
+        margin: 2em auto;
+        max-width: 500px;
+        background: rgba(10, 10, 10, 0.95);
+        padding: 3em;
+        border: 1px solid #333;
+        box-shadow: 0 0 15px rgba(139, 0, 0, 0.3);
+    }
+
+    .portal-title {
+        font-family: 'UnifrakturMaguntia', cursive;
+        color: #8b0000;
+        text-align: center;
+        font-size: 2em;
+        margin-bottom: 1.5em;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .form-group {
+        margin-bottom: 1.5em;
+    }
+
+    .form-label {
+        display: block;
+        color: #8b0000;
+        margin-bottom: 0.5em;
+        font-family: 'Crimson Text', serif;
+    }
+
+    .quantum-input {
+        width: 100%;
+        padding: 0.8em;
+        background: rgba(20, 20, 20, 0.7);
+        border: 1px solid #333;
+        color: #d4d4d4;
+        font-family: 'Crimson Text', serif;
+    }
+
+    .initiation-submit {
+        width: 100%;
+        padding: 1em;
+        background: #8b0000;
+        color: #d4d4d4;
+        border: none;
+        font-family: 'Crimson Text', serif;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-top: 2em;
+    }
+
+    .initiation-submit:hover {
+        background: #660000;
+        box-shadow: 0 0 10px rgba(139, 0, 0, 0.5);
+    }
+
+    .quantum-sigil {
+        text-align: center;
+        margin-top: 2em;
+        font-family: 'UnifrakturMaguntia', cursive;
+        color: #660000;
+        opacity: 0.7;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="initiation-portal">
+    <h1 class="portal-title">Begin Your Initiation</h1>
+
+    {{ form_start(registrationForm) }}
+        {{ form_widget(registrationForm) }}
+        <button type="submit" class="initiation-submit">Enter the Void</button>
+    {{ form_end(registrationForm) }}
+
+    <div class="quantum-sigil">※ Ψ∞ ※</div>
+</div>
+{% endblock %}
