@@ -1,0 +1,102 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ item_type == 'blessing' ? 'Sacred Blessing' : 'Dark Curse' }} Details{% endblock %}
+
+<link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+
+{% block stylesheets %}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital@0;1&family=UnifrakturMaguntia&display=swap');
+
+    .item-details {
+        margin: 2em auto;
+        max-width: 800px;
+        background: rgba(10, 10, 10, 0.95);
+        padding: 3em;
+        border: 1px solid #333;
+        color: #d4d4d4;
+    }
+
+    .item-header {
+        text-align: center;
+        margin-bottom: 2em;
+    }
+
+    .item-title {
+        font-family: 'UnifrakturMaguntia', cursive;
+        font-size: 2.2em;
+        color: {{ item_type == 'blessing' ? '#4a90e2' : '#8b0000' }};
+    }
+
+    .form-group {
+        margin-bottom: 1.5em;
+    }
+
+    .form-label {
+        display: block;
+        color: {{ item_type == 'blessing' ? '#4a90e2' : '#8b0000' }};
+        margin-bottom: 0.5em;
+        font-family: 'Crimson Text', serif;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 0.8em;
+        background: rgba(20, 20, 20, 0.7);
+        border: 1px solid #333;
+        color: #d4d4d4;
+    }
+
+    .power-meter {
+        height: 20px;
+        background: linear-gradient(to right, 
+            {{ item_type == 'blessing' ? '#4a90e2' : '#8b0000' }} var(--power-level), 
+            #333 var(--power-level)
+        );
+        margin: 1em 0;
+    }
+
+    .submit-button {
+        width: 100%;
+        padding: 1em;
+        background: {{ item_type == 'blessing' ? '#4a90e2' : '#8b0000' }};
+        color: #d4d4d4;
+        border: none;
+        font-family: 'Crimson Text', serif;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-top: 2em;
+    }
+
+    .submit-button:hover {
+        opacity: 0.9;
+        transform: translateY(-2px);
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="item-details">
+    <div class="item-header">
+        <h1 class="item-title">
+            {% if item_type == 'blessing' %}
+                Sacred Blessing Details
+            {% else %}
+                Dark Curse Details
+            {% endif %}
+        </h1>
+    </div>
+
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button type="submit" class="submit-button">
+            {% if item_type == 'blessing' %}
+                Consecrate Blessing
+            {% else %}
+                Seal Curse
+            {% endif %}
+        </button>
+    {{ form_end(form) }}
+</div>
+{% endblock %}

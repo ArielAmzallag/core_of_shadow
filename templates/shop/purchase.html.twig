@@ -1,0 +1,210 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Purchase Confirmation - Mystic Mart™{% endblock %}
+
+{% block stylesheets %}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital@0;1&family=UnifrakturMaguntia&display=swap');
+
+    .purchase-confirmation {
+        margin: 2em auto;
+        max-width: 600px;
+        background: {{ type == 'blessing' ? 
+            'linear-gradient(135deg, rgba(30,30,50,0.9) 0%, rgba(20,20,40,0.95) 100%)' : 
+            'linear-gradient(135deg, rgba(50,30,30,0.9) 0%, rgba(40,20,20,0.95) 100%)'
+        }};
+        padding: 3em;
+        border: 1px solid #333;
+        font-family: 'Crimson Text', serif;
+        position: relative;
+        z-index: 1;
+        overflow: hidden;
+    }.particle-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+}
+
+.mystical-aura {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -2;
+}
+
+
+    @keyframes pulseAura {
+        0%, 100% { opacity: 0.4; }
+        50% { opacity: 0.8; }
+    }
+
+    .confirmation-title {
+        font-family: 'UnifrakturMaguntia', cursive;
+        font-size: 2em;
+        margin-bottom: 1em;
+        text-align: center;
+        position: relative;
+    }
+
+    .blessing-title { 
+        color: #4a90e2; 
+        text-shadow: 0 0 15px rgba(74, 144, 226, 0.5);
+    }
+    
+    .curse-title { 
+        color: #8b0000; 
+        text-shadow: 0 0 15px rgba(139, 0, 0, 0.5);
+    }
+
+    .item-details {
+        padding: 2em;
+        border-left: 3px solid {{ type == 'blessing' ? '#4a90e2' : '#8b0000' }};
+        margin: 2em 0;
+        background: rgba(0, 0, 0, 0.2);
+        position: relative;
+        z-index: 1;
+    }
+
+    .receipt {
+        font-family: monospace;
+        padding: 1em;
+        background: rgba(20, 20, 20, 0.7);
+        margin-top: 2em;
+        border: 1px solid {{ type == 'blessing' ? '#4a90e2' : '#8b0000' }};
+    }
+
+    .fine-print {
+        font-size: 0.8em;
+        font-style: italic;
+        opacity: 0.7;
+        margin-top: 2em;
+        text-align: center;
+    }
+
+    .return-button {
+        display: block;
+        width: 100%;
+        padding: 1em;
+        background: {{ type == 'blessing' ? 
+            'linear-gradient(45deg, #4169e1, #1e90ff)' : 
+            'linear-gradient(45deg, #8b0000, #660000)'
+        }};
+        border: none;
+        color: #fff;
+        font-family: 'Crimson Text', serif;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-align: center;
+        text-decoration: none;
+        margin-top: 2em;
+        position: relative;
+        z-index: 1;
+    }
+
+    .return-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="purchase-confirmation">
+    <div class="particle-container"></div>
+    <div class="mystical-aura"></div>
+
+    <h1 class="confirmation-title {{ type }}-title">
+        {% if type == 'blessing' %}
+            Divine Transaction Complete!
+        {% else %}
+            Infernal Deal Sealed!
+        {% endif %}
+    </h1>
+
+    <div class="item-details">
+        <h2>{{ item.name }}</h2>
+        <p>{{ type == 'blessing' ? item.benefits : item.sideEffects }}</p>
+    </div>
+
+    <div class="receipt">
+        <div>Transaction ID: #{{ random() }}</div>
+        <div>Price: {{ item.price }} gold</div>
+        <div>Duration: {{ item.duration }} days</div>
+        <div>Power Level: {{ item.power }}</div>
+        <div>Rarity: {{ item.rarity|upper }}</div>
+    </div>
+
+    <div class="fine-print">
+        {% if type == 'blessing' %}
+            *By accepting this blessing, you acknowledge that any ascension to godhood is purely coincidental.
+        {% else %}
+            *Management is not responsible for any dimensional rifts, temporal paradoxes, or existential crises that may occur.
+        {% endif %}
+    </div>
+
+<a href="{{ path('app_home') }}" class="return-link">Return to the Mystical Marketplace</a>
+
+</div>
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<script>
+const particleConfig = {% if type == 'blessing' %}
+    {
+        "particles": {
+            "number": { "value": 50, "density": { "enable": true, "value_area": 800 } },
+            "color": { "value": ["#4a90e2", "#ffd700", "#ffffff"] },
+            "shape": { "type": ["circle", "star"] },
+            "opacity": {
+                "value": 0.6,
+                "random": true,
+                "anim": { "enable": true, "speed": 1, "opacity_min": 0.1 }
+            },
+            "size": {
+                "value": 3,
+                "random": true,
+                "anim": { "enable": true, "speed": 2, "size_min": 0.1 }
+            },
+            "move": {
+                "enable": true,
+                "speed": 2,
+                "direction": "top",
+                "random": true
+            }
+        }
+    }
+{% else %}
+    {
+        "particles": {
+            "number": { "value": 60, "density": { "enable": true, "value_area": 800 } },
+            "color": { "value": ["#8b0000", "#000000", "#660000"] },
+            "shape": { "type": ["circle", "edge"] },
+            "opacity": {
+                "value": 0.6,
+                "random": true,
+                "anim": { "enable": true, "speed": 1, "opacity_min": 0.1 }
+            },
+            "size": {
+                "value": 3,
+                "random": true,
+                "anim": { "enable": true, "speed": 2, "size_min": 0.1 }
+            },
+            "move": {
+                "enable": true,
+                "speed": 2,
+                "direction": "bottom",
+                "random": true
+            }
+        }
+    }
+{% endif %};
+
+particlesJS(document.querySelector('.particle-container'), particleConfig);
+</script>
+{% endblock %}

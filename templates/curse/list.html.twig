@@ -1,0 +1,156 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dark Curses Catalog{% endblock %}
+
+{% block stylesheets %}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital@0;1&family=UnifrakturMaguntia&display=swap');
+
+    .curses-container {
+        margin: 2em auto;
+        max-width: 1200px;
+        padding: 2em;
+    }
+
+    .curse-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2em;
+    }
+
+    .curse-card {
+        background: rgba(10, 10, 10, 0.95);
+        border: 1px solid #8b0000;
+        padding: 2em;
+        transition: all 0.3s ease;
+    }
+
+    .curse-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(139, 0, 0, 0.2);
+    }
+
+    .curse-name {
+        font-family: 'UnifrakturMaguntia', cursive;
+        font-size: 1.8em;
+        color: #8b0000;
+        margin-bottom: 1em;
+    }
+
+    .curse-stats {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1em;
+        margin: 1em 0;
+    }
+
+    .stat-label {
+        color: #888;
+        font-size: 0.9em;
+    }
+
+    .stat-value {
+        color: #d4d4d4;
+        font-size: 1.1em;
+    }
+
+    .curse-effects {
+        padding: 1em;
+        background: rgba(139, 0, 0, 0.1);
+        border-left: 3px solid #8b0000;
+        margin: 1em 0;
+    }
+
+    .rarity-indicator {
+        display: inline-block;
+        padding: 0.3em 0.8em;
+        background: rgba(139, 0, 0, 0.2);
+        border: 1px solid #8b0000;
+        font-size: 0.9em;
+        margin-top: 1em;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 1em;
+        margin-top: 2em;
+    }
+
+    .action-button {
+        padding: 0.8em 1.5em;
+        background: #8b0000;
+        color: white;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        text-align: center;
+    }
+
+    .action-button:hover {
+        background: #660000;
+    }
+
+    .add-curse {
+        display: block;
+        width: 100%;
+        padding: 1em;
+        background: #8b0000;
+        color: white;
+        text-align: center;
+        text-decoration: none;
+        margin-top: 2em;
+        font-family: 'UnifrakturMaguntia', cursive;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="curses-container">
+    <div class="curse-grid">
+        {% for curse in curses %}
+            <div class="curse-card">
+                <h2 class="curse-name">{{ curse.name }}</h2>
+                
+                <div class="curse-stats">
+                    <div>
+                        <span class="stat-label">Power</span>
+                        <div class="stat-value">{{ curse.power }}</div>
+                    </div>
+                    <div>
+                        <span class="stat-label">Duration</span>
+                        <div class="stat-value">{{ curse.duration }} days</div>
+                    </div>
+                    <div>
+                        <span class="stat-label">Price</span>
+                        <div class="stat-value">{{ curse.price }} gold</div>
+                    </div>
+                </div>
+
+                <div class="curse-effects">
+                    {{ curse.sideEffects }}
+                </div>
+
+                <div class="rarity-indicator">
+                    {{ curse.rarity }}
+                </div>
+
+                <div class="action-buttons">
+                    <a href="{{ path('curse_edit', {'id': curse.id}) }}" class="action-button">Modify</a>
+                    <a href="{{ path('curse_delete', {'id': curse.id}) }}" 
+                       class="action-button"
+                       onclick="return confirm('Are you sure you wish to seal away this curse?')">
+                        Remove
+                    </a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    {% if is_granted('ROLE_KEEPER') %}
+        <a href="{{ path('curse_new') }}" class="add-curse">
+            Add New Curse
+        </a>
+    {% endif %}
+</div>
+{% endblock %}

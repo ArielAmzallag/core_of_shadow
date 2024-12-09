@@ -20,24 +20,24 @@ class UserFixtures extends Fixture
     {
         $users = [
             [
-                'email' => 'keeper@void.com',
-                'roles' => ['ROLE_KEEPER'],
-                'username' => 'Quantum Keeper',
-                'clearance' => 'KEEPER',
+                'email' => 'shopkeeper@void.com',
+                'roles' => ['ROLE_SHOPKEEPER'],
+                'username' => 'Master Shopkeeper',
+                'clearance' => 'SHOPKEEPER',
                 'quantum_signature' => 'Ω∞'
             ],
             [
-                'email' => 'observer@void.com',
-                'roles' => ['ROLE_OBSERVER'],
-                'username' => 'Void Observer',
-                'clearance' => 'OBSERVER',
+                'email' => 'merchant@void.com',
+                'roles' => ['ROLE_MERCHANT'],
+                'username' => 'Void Merchant',
+                'clearance' => 'MERCHANT',
                 'quantum_signature' => 'Ψ∆'
             ],
             [
-                'email' => 'initiate@void.com',
-                'roles' => ['ROLE_INITIATE'],
-                'username' => 'Shadow Initiate',
-                'clearance' => 'INITIATE',
+                'email' => 'customer@void.com',
+                'roles' => ['ROLE_CUSTOMER'],
+                'username' => 'Shadow Customer',
+                'clearance' => 'CUSTOMER',
                 'quantum_signature' => 'Φ₀'
             ]
         ];
@@ -51,7 +51,7 @@ class UserFixtures extends Fixture
             $user->setQuantumSignature($userData['quantum_signature']);
             $user->setInitiationDate(new \DateTimeImmutable());
             
-            $hashedPassword = $this->passwordHasher->hashPassword($user, 'quantum_void');
+            $hashedPassword = $this->passwordHasher->hashPassword($user, 'mystic_shop');
             $user->setPassword($hashedPassword);
 
             $manager->persist($user);

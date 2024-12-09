@@ -1,0 +1,12 @@
+<div class="recommendation-card {{ item.type }}-recommendation">
+    <div class="recommendation-content">
+        <h3 class="item-name">{{ item.item.name }}</h3>
+        <div class="power-indicator">
+            <div class="power-bar" style="width: {{ item.score * 100 }}%"></div>
+        </div>
+        <div class="recommendation-reason">{{ item.reason }}</div>
+        <div class="recommendation-score">
+            Resonance: {{ (item.score * 100)|number_format(0) }}%
+        </div>
+    </div>
+</div>

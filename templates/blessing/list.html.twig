@@ -1,0 +1,156 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Sacred Blessings Catalog{% endblock %}
+
+{% block stylesheets %}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital@0;1&family=UnifrakturMaguntia&display=swap');
+
+    .blessings-container {
+        margin: 2em auto;
+        max-width: 1200px;
+        padding: 2em;
+    }
+
+    .blessing-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2em;
+    }
+
+    .blessing-card {
+        background: rgba(10, 10, 10, 0.95);
+        border: 1px solid #4a90e2;
+        padding: 2em;
+        transition: all 0.3s ease;
+    }
+
+    .blessing-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(74, 144, 226, 0.2);
+    }
+
+    .blessing-name {
+        font-family: 'UnifrakturMaguntia', cursive;
+        font-size: 1.8em;
+        color: #4a90e2;
+        margin-bottom: 1em;
+    }
+
+    .blessing-stats {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1em;
+        margin: 1em 0;
+    }
+
+    .stat-label {
+        color: #888;
+        font-size: 0.9em;
+    }
+
+    .stat-value {
+        color: #d4d4d4;
+        font-size: 1.1em;
+    }
+
+    .blessing-benefits {
+        padding: 1em;
+        background: rgba(74, 144, 226, 0.1);
+        border-left: 3px solid #4a90e2;
+        margin: 1em 0;
+    }
+
+    .rarity-indicator {
+        display: inline-block;
+        padding: 0.3em 0.8em;
+        background: rgba(74, 144, 226, 0.2);
+        border: 1px solid #4a90e2;
+        font-size: 0.9em;
+        margin-top: 1em;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 1em;
+        margin-top: 2em;
+    }
+
+    .action-button {
+        padding: 0.8em 1.5em;
+        background: #4a90e2;
+        color: white;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        text-align: center;
+    }
+
+    .action-button:hover {
+        background: #357abd;
+    }
+
+    .add-blessing {
+        display: block;
+        width: 100%;
+        padding: 1em;
+        background: #4a90e2;
+        color: white;
+        text-align: center;
+        text-decoration: none;
+        margin-top: 2em;
+        font-family: 'UnifrakturMaguntia', cursive;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="blessings-container">
+    <div class="blessing-grid">
+        {% for blessing in blessings %}
+            <div class="blessing-card">
+                <h2 class="blessing-name">{{ blessing.name }}</h2>
+                
+                <div class="blessing-stats">
+                    <div>
+                        <span class="stat-label">Power</span>
+                        <div class="stat-value">{{ blessing.power }}</div>
+                    </div>
+                    <div>
+                        <span class="stat-label">Duration</span>
+                        <div class="stat-value">{{ blessing.duration }} days</div>
+                    </div>
+                    <div>
+                        <span class="stat-label">Price</span>
+                        <div class="stat-value">{{ blessing.price }} gold</div>
+                    </div>
+                </div>
+
+                <div class="blessing-benefits">
+                    {{ blessing.benefits }}
+                </div>
+
+                <div class="rarity-indicator">
+                    {{ blessing.rarity }}
+                </div>
+
+                <div class="action-buttons">
+                    <a href="{{ path('blessing_edit', {'id': blessing.id}) }}" class="action-button">Modify</a>
+                    <a href="{{ path('blessing_delete', {'id': blessing.id}) }}" 
+                       class="action-button"
+                       onclick="return confirm('Are you sure you wish to remove this blessing?')">
+                        Remove
+                    </a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    {% if is_granted('ROLE_KEEPER') %}
+        <a href="{{ path('blessing_new') }}" class="add-blessing">
+            Add New Blessing
+        </a>
+    {% endif %}
+</div>
+{% endblock %}

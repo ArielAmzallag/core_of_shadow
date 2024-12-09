@@ -18,7 +18,7 @@ class SecurityController extends AbstractController
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
         if ($this->getUser()) {
-            return $this->redirectToRoute('app_shadow');
+            return $this->redirectToRoute('app_home');
         }
 
         $error = $authenticationUtils->getLastAuthenticationError();
@@ -29,7 +29,14 @@ class SecurityController extends AbstractController
             'error' => $error,
         ]);
     }
-
+      #[Route('/', name: 'app_root')]
+      public function root(): Response
+      {
+          if ($this->getUser()) {
+              return $this->redirectToRoute('app_home');
+          }
+          return $this->redirectToRoute('app_login');
+      }
     #[Route('/register', name: 'app_register')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
@@ -38,32 +45,37 @@ class SecurityController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $user->setPassword(
-                $userPasswordHasher->hashPassword(
-                    $user,
-                    $form->get('plainPassword')->getData()
-                )
-            );
-            $user->setRoles(['ROLE_INITIATE']);
-            $user->setInitiationDate(new \DateTimeImmutable());
-            $user->setQuantumSignature('Ψ₀' . rand(100, 999));
-            $user->setClearanceLevel('INITIATE');
+            try {
+                $user->setPassword(
+                    $userPasswordHasher->hashPassword(
+                        $user,
+                        $form->get('plainPassword')->getData()
+                    )
+                );
+                $user->setRoles(['ROLE_CUSTOMER']);
+                $user->setInitiationDate(new \DateTimeImmutable());
+                $user->setQuantumSignature('Ψ₀' . rand(100, 999));
+                $user->setClearanceLevel('CUSTOMER');
 
-            $entityManager->persist($user);
-            $entityManager->flush();
+                $entityManager->persist($user);
+                $entityManager->flush();
 
-            return $this->redirectToRoute('app_login');
+                return $this->redirectToRoute('app_home');
+            } catch (\Doctrine\DBAL\Exception\UniqueConstraintViolationException $e) {
+                $this->addFlash('error', 'This quantum signature (email) is already bound to another initiate. Choose a different one.');
+                return $this->render('security/register.html.twig', [
+                    'registrationForm' => $form->createView(),
+                ]);
+            }
         }
 
         return $this->render('security/register.html.twig', [
             'registrationForm' => $form->createView(),
         ]);
     }
-
     #[Route('/logout', name: 'app_logout')]
     public function logout(): void
     {
-        // Quantum signatures are preserved during dimensional transition
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
 }

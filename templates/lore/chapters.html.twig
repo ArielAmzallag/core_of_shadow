@@ -1,0 +1,116 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ancient Knowledge - Mystic Mart™{% endblock %}
+
+{% block stylesheets %}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital@0;1&family=UnifrakturMaguntia&display=swap');
+
+    .lore-container {
+        margin: 2em auto;
+        max-width: 800px;
+        font-family: 'Crimson Text', serif;
+    }
+
+    .chapter {
+        background: rgba(10, 10, 10, 0.95);
+        border: 1px solid #333;
+        margin-bottom: 2em;
+        padding: 2em;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .chapter-title {
+        font-family: 'UnifrakturMaguntia', cursive;
+        font-size: 2em;
+        color: #8b0000;
+        margin-bottom: 1em;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .chapter-content {
+        font-size: 1.1em;
+        line-height: 1.8;
+        margin-bottom: 1.5em;
+        position: relative;
+        z-index: 2;
+    }
+
+    .era-badge {
+        position: absolute;
+        top: 1em;
+        right: 1em;
+        padding: 0.5em;
+        font-family: 'UnifrakturMaguntia', cursive;
+        font-size: 0.8em;
+        color: #4a90e2;
+        border: 1px solid #4a90e2;
+    }
+
+    .secrets {
+        font-style: italic;
+        color: #666;
+        padding: 1em;
+        background: rgba(20, 20, 20, 0.7);
+        margin-top: 1em;
+        border-left: 3px solid #8b0000;
+        transition: all 0.3s ease;
+    }
+
+    .secrets:hover {
+        color: #d4d4d4;
+        background: rgba(139, 0, 0, 0.2);
+    }
+
+    .chapter::before {
+        content: '※';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 10em;
+        opacity: 0.03;
+        color: #8b0000;
+        pointer-events: none;
+    }
+
+    .disclaimer {
+        text-align: center;
+        font-size: 0.8em;
+        opacity: 0.7;
+        margin-top: 2em;
+        font-style: italic;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .chapter {
+        animation: fadeIn 0.5s ease-out forwards;
+        animation-delay: calc(var(--index) * 0.2s);
+        opacity: 0;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="lore-container">
+    {% for chapter in chapters %}
+        <div class="chapter" style="--index: {{ loop.index }}">
+            <span class="era-badge">{{ chapter.era }}</span>
+            <h2 class="chapter-title">{{ chapter.chapter }}</h2>
+            <div class="chapter-content">{{ chapter.content|nl2br }}</div>
+            <div class="secrets">
+                Revealed Secret: {{ chapter.secretsRevealed }}
+            </div>
+        </div>
+    {% endfor %}
+
+    <div class="disclaimer">
+        *Any resemblance to actual cosmic entities, living or dead, is purely intentional and they should really stop complaining about it.
+    </div>
+</div>
+{% endblock %}

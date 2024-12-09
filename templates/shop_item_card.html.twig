@@ -1,0 +1,319 @@
+<div class="item-card {{ type }}-card" data-id="{{ item.id }}" data-type="{{ type }}" data-rarity="{{ item.rarity }}">
+    <div class="particle-container"></div>
+    <div class="mystical-aura"></div>
+    
+    <div class="item-rarity {{ item.rarity }}">
+        <span class="rarity-symbol">
+            {% if item.rarity == 'legendary' %}✧
+            {% elseif item.rarity == 'epic' %}✤
+            {% elseif item.rarity == 'rare' %}✺
+            {% elseif item.rarity == 'uncommon' %}✥
+            {% else %}✣
+            {% endif %}
+        </span>
+        {{ item.rarity|upper }}
+    </div>
+
+    <h3 class="item-name">{{ item.name }}</h3>
+    
+    <div class="power-indicator">
+        <div class="power-bar" style="width: {{ item.power }}%"></div>
+        <span class="power-value">{{ item.power }}</span>
+    </div>
+
+    <div class="item-stats">
+        <div class="power-level">
+            <span class="stat-label">Power:</span>
+            <span class="stat-value">{{ item.power }}</span>
+        </div>
+        <div class="duration">
+            <span class="stat-label">Duration:</span>
+            <span class="stat-value">{{ item.duration }} days</span>
+        </div>
+    </div>
+
+    <div class="item-description">
+        {% if type == 'blessing' %}
+            {{ item.benefits }}
+        {% else %}
+            {{ item.sideEffects }}
+        {% endif %}
+    </div>
+
+    <div class="item-price">
+        <span class="price-value">{{ item.price }}</span>
+        <span class="price-currency">gold</span>
+    </div>
+
+    <button class="purchase-button" onclick="location.href='{{ path('shop_purchase', {'type': type, 'id': item.id}) }}'">
+        {% if type == 'blessing' %}
+            Embrace Divine Light
+        {% else %}
+            Accept Darkness
+        {% endif %}
+    </button>
+</div>
+
+<style>
+    .item-card {
+        background: rgba(20, 20, 20, 0.9);
+        border: 1px solid #333;
+        padding: 2em;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        transform-style: preserve-3d;
+        perspective: 1000px;
+    }
+
+    .blessing-card {
+        background: linear-gradient(135deg, rgba(30,30,50,0.9) 0%, rgba(20,20,40,0.95) 100%);
+        border-left: 3px solid #4a90e2;
+    }
+
+    .curse-card {
+        background: linear-gradient(135deg, rgba(50,30,30,0.9) 0%, rgba(40,20,20,0.95) 100%);
+        border-left: 3px solid #8b0000;
+    }
+
+    .item-name {
+        font-family: 'UnifrakturMaguntia', cursive;
+        font-size: 1.5em;
+        margin-bottom: 1em;
+    }
+
+    .blessing-card .item-name { 
+        color: #4a90e2;
+        text-shadow: 0 0 10px rgba(74, 144, 226, 0.3);
+    }
+
+    .curse-card .item-name { 
+        color: #8b0000;
+        text-shadow: 0 0 10px rgba(139, 0, 0, 0.3);
+    }
+
+    .power-indicator {
+        height: 4px;
+        background: rgba(0, 0, 0, 0.3);
+        margin: 1rem 0;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .blessing-card .power-bar {
+        background: linear-gradient(90deg, #4a90e2, #87ceeb);
+        box-shadow: 0 0 10px rgba(74, 144, 226, 0.5);
+    }
+
+    .curse-card .power-bar {
+        background: linear-gradient(90deg, #8b0000, #ff4444);
+        box-shadow: 0 0 10px rgba(139, 0, 0, 0.5);
+    }
+
+    .item-stats {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1em;
+        margin: 1.5em 0;
+        font-family: 'Crimson Text', serif;
+    }
+
+    .item-description {
+        font-style: italic;
+        line-height: 1.6;
+        margin: 1.5em 0;
+        padding: 1em;
+        background: rgba(0, 0, 0, 0.2);
+        border-left: 2px solid;
+    }
+
+    .blessing-card .item-description {
+        border-color: #4a90e2;
+    }
+
+    .curse-card .item-description {
+        border-color: #8b0000;
+    }
+
+    .item-price {
+        font-family: 'UnifrakturMaguntia', cursive;
+        font-size: 1.3em;
+        margin: 1em 0;
+        text-align: center;
+        color: #ffd700;
+        text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+    }
+
+    .purchase-button {
+        width: 100%;
+        padding: 1em;
+        font-family: 'Crimson Text', serif;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .blessing-card .purchase-button {
+        background: linear-gradient(45deg, #4169e1, #1e90ff);
+        color: white;
+    }
+
+    .curse-card .purchase-button {
+        background: linear-gradient(45deg, #8b0000, #660000);
+        color: white;
+    }
+
+    .purchase-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+
+    .mystical-aura {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .blessing-card .mystical-aura {
+        background: radial-gradient(circle at 50% 50%, 
+            rgba(74, 144, 226, 0.2) 0%,
+            rgba(255, 215, 0, 0.1) 50%,
+            transparent 70%
+        );
+        filter: blur(8px);
+    }
+
+    .curse-card .mystical-aura {
+        background: radial-gradient(circle at 50% 50%, 
+            rgba(139, 0, 0, 0.2) 0%,
+            rgba(0, 0, 0, 0.1) 50%,
+            transparent 70%
+        );
+        filter: blur(8px);
+    }
+
+    .item-card:hover .mystical-aura {
+        opacity: 1;
+    }
+
+    .particle-container {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+    }
+</style>
+
+<script>
+const particleConfigs = {
+    blessing: {
+        particles: {
+            number: { value: 50, density: { enable: true, value_area: 800 } },
+            color: { value: ["#4a90e2", "#ffd700", "#ffffff"] },
+            shape: { 
+                type: ["circle", "star"],
+                stroke: { width: 0 },
+                polygon: { nb_sides: 5 }
+            },
+            opacity: {
+                value: 0.6,
+                random: true,
+                anim: { enable: true, speed: 1, opacity_min: 0.1, sync: false }
+            },
+            size: {
+                value: 3,
+                random: true,
+                anim: { enable: true, speed: 2, size_min: 0.1, sync: false }
+            },
+            line_linked: {
+                enable: true,
+                distance: 150,
+                color: "#4a90e2",
+                opacity: 0.2,
+                width: 1
+            },
+            move: {
+                enable: true,
+                speed: 2,
+                direction: "top",
+                random: true,
+                straight: false,
+                out_mode: "out",
+                bounce: false,
+                attract: { enable: true, rotateX: 600, rotateY: 1200 }
+            }
+        },
+        interactivity: {
+            detect_on: "canvas",
+            events: {
+                onhover: { enable: true, mode: "repulse" },
+                onclick: { enable: true, mode: "push" },
+                resize: true
+            },
+            modes: {
+                repulse: { distance: 100, duration: 0.4 },
+                push: { particles_nb: 4 }
+            }
+        }
+    },
+    curse: {
+        particles: {
+            number: { value: 60, density: { enable: true, value_area: 800 } },
+            color: { value: ["#8b0000", "#000000", "#660000"] },
+            shape: {
+                type: ["circle", "edge"],
+                stroke: { width: 0 },
+                polygon: { nb_sides: 6 }
+            },
+            opacity: {
+                value: 0.6,
+                random: true,
+                anim: { enable: true, speed: 1, opacity_min: 0.1, sync: false }
+            },
+            size: {
+                value: 3,
+                random: true,
+                anim: { enable: true, speed: 2, size_min: 0.1, sync: false }
+            },
+            line_linked: {
+                enable: true,
+                distance: 150,
+                color: "#8b0000",
+                opacity: 0.2,
+                width: 1
+            },
+            move: {
+                enable: true,
+                speed: 2,
+                direction: "bottom",
+                random: true,
+                straight: false,
+                out_mode: "out",
+                bounce: false,
+                attract: { enable: true, rotateX: 600, rotateY: 1200 }
+            }
+        },
+        interactivity: {
+            detect_on: "canvas",
+            events: {
+                onhover: { enable: true, mode: "bubble" },
+                onclick: { enable: true, mode: "repulse" },
+                resize: true
+            },
+            modes: {
+                bubble: { distance: 200, size: 6, duration: 0.4 },
+                repulse: { distance: 200, duration: 0.4 }
+            }
+        }
+    }
+};
+
+document.querySelectorAll('.item-card').forEach(card => {
+    const type = card.dataset.type;
+    const container = card.querySelector('.particle-container');
+    particlesJS(container, particleConfigs[type]);
+});
+</script>

@@ -1,0 +1,28 @@
+<div class="item-card {{ type }}-card">
+    <div class="card-inner">
+        <div class="card-header">
+            <h3 class="card-title">{{ item.name }}</h3>
+            <span class="rarity-badge {{ item.rarity }}">{{ item.rarity|upper }}</span>
+        </div>
+        
+        <div class="power-bar">
+            <div class="power-fill" style="width: {{ item.power }}%"></div>
+            <span class="power-value">Power: {{ item.power }}</span>
+        </div>
+
+        <div class="card-description">
+            {% if type == 'blessing' %}
+                {{ item.benefits }}
+            {% else %}
+                {{ item.sideEffects }}
+            {% endif %}
+        </div>
+
+        <div class="card-footer">
+            <div class="price-tag">{{ item.price }} gold</div>
+            <button class="btn-purchase {{ type }}-purchase" onclick="purchaseItem('{{ type }}', {{ item.id }})">
+                {% if type == 'blessing' %}Embrace Blessing{% else %}Accept Curse{% endif %}
+            </button>
+        </div>
+    </div>
+</div>

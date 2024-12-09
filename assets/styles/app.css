@@ -1,3 +1,69 @@
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital@0;1&family=UnifrakturMaguntia&display=swap');
+
 body {
-    background-color: skyblue;
+    background-color: #1a1a1a;
+    color: #d4d4d4;
+}
+
+.shop-nav {
+    background: rgba(10, 10, 10, 0.95);
+    padding: 1em;
+    display: flex;
+    justify-content: flex-end;
+    gap: 2em;
+    border-bottom: 1px solid #333;
+}
+
+.shop-nav a {
+    color: #d4d4d4;
+    text-decoration: none;
+    font-family: 'UnifrakturMaguntia', cursive;
+    transition: color 0.3s ease;
+}
+
+.shop-nav a:hover {
+    color: #8b0000;
+}
+
+.user-info {
+    margin-right: auto;
+    font-family: 'Crimson Text', serif;
+}
+
+.flash-success {
+    background: rgba(0, 139, 0, 0.2);
+    border: 1px solid #008b00;
+    padding: 1em;
+    margin: 1em;
+}
+
+.flash-error {
+    background: rgba(139, 0, 0, 0.2);
+    border: 1px solid #8b0000;
+    padding: 1em;
+    margin: 1em;
+}
+
+.quantum-input {
+    background: rgba(20, 20, 20, 0.7);
+    border: 1px solid #333;
+    color: #d4d4d4;
+    padding: 0.8em;
+    width: 100%;
+    font-family: 'Crimson Text', serif;
+}
+
+.mystic-button {
+    background: #8b0000;
+    color: #d4d4d4;
+    border: none;
+    padding: 1em 2em;
+    font-family: 'UnifrakturMaguntia', cursive;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.mystic-button:hover {
+    background: #660000;
+    transform: translateY(-2px);
 }

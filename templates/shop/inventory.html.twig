@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mystic Mart™ - Arcane Inventory{% endblock %}
+
+{% block stylesheets %}
+    {{ include('shop/partials/inventory_styles.html.twig') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    {{ include('shop/partials/inventory_scripts.html.twig') }}
+{% endblock %}
+
+{% block body %}
+    {% include 'shop/partials/background_effects.html.twig' %}
+    
+    <div class="shop-container">
+        {% if recommended|length > 0 %}
+            <section class="recommendations-section">
+                <h2 class="mystical-title">Mystical Resonances for {{ app.user.username }}</h2>
+                <div class="recommendations-grid">
+                    {% for item in recommended %}
+                        {{ include('shop/partials/recommendation_card.html.twig', {item: item}) }}
+                    {% endfor %}
+                </div>
+            </section>
+        {% endif %}
+
+        <div class="quantum-deals-section">
+            <button class="quantum-deals-button" onclick="fetchPersonalDeals()">
+                <span class="mystical-symbol">✧</span>
+                Reveal Your Destiny Deals
+                <span class="mystical-symbol">✧</span>
+            </button>
+            <div class="quantum-deals-container"></div>
+        </div>
+
+        <div class="realm-section divine-realm">
+            <div class="realm-header">
+                <h2 class="mystical-title">Divine Blessings</h2>
+                <div class="realm-divider">
+                    <span class="divider-symbol">✧</span>
+                    <span class="divider-line"></span>
+                    <span class="divider-symbol">✧</span>
+                </div>
+            </div>
+            <div class="inventory-grid">
+                {% for blessing in blessings %}
+                    {{ include('shop/partials/item_card.html.twig', {
+                        item: blessing,
+                        type: 'blessing'
+                    }) }}
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="realm-section shadow-realm">
+            <div class="realm-header">
+                <h2 class="mystical-title">Forbidden Curses</h2>
+                <div class="realm-divider">
+                    <span class="divider-symbol">†</span>
+                    <span class="divider-line"></span>
+                    <span class="divider-symbol">†</span>
+                </div>
+            </div>
+            <div class="inventory-grid">
+                {% for curse in curses %}
+                    {{ include('shop/partials/item_card.html.twig', {
+                        item: curse,
+                        type: 'curse'
+                    }) }}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

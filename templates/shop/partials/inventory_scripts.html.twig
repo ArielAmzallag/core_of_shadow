@@ -1,0 +1,79 @@
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        initParticles();
+        createFloatingRunes();
+        initQuantumDeals();
+    });
+
+    function initParticles() {
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 80 },
+                color: { value: ['#4a90e2', '#8b0000'] },
+                shape: { type: 'circle' },
+                opacity: {
+                    value: 0.5,
+                    random: true,
+                    anim: { enable: true }
+                },
+                size: {
+                    value: 3,
+                    random: true
+                },
+                move: {
+                    enable: true,
+                    speed: 2,
+                    direction: 'none',
+                    random: true,
+                    out_mode: 'out'
+                }
+            },
+            interactivity: {
+                events: {
+                    onhover: { enable: true, mode: 'repulse' },
+                    onclick: { enable: true, mode: 'push' }
+                }
+            }
+        });
+    }
+
+    function createFloatingRunes() {
+        const runes = '';
+        const container = document.querySelector('.floating-runes-container');
+        
+        for(let i = 0; i < 20; i++) {
+            const rune = document.createElement('div');
+            rune.className = 'floating-rune';
+            rune.textContent = runes[Math.floor(Math.random() * runes.length)];
+            rune.style.left = `${Math.random() * 100}%`;
+            rune.style.top = `${Math.random() * 100}%`;
+            rune.style.animationDelay = `${Math.random() * 10}s`;
+            container.appendChild(rune);
+        }
+    }
+
+    function initQuantumDeals() {
+        const buttons = document.querySelectorAll('.quantum-deals-button');
+        buttons.forEach(button => {
+            button.addEventListener('click', async () => {
+                button.style.transform = 'scale(0.98)';
+                setTimeout(() => button.style.transform = '', 200);
+            });
+        });
+    }
+
+          function fetchPersonalDeals() {
+          fetch('/shop/personal-deals')
+              .then(response => response.json())
+              .then(deals => {
+                  const container = document.querySelector('.quantum-deals-container');
+                  container.innerHTML = deals.map(deal => `
+                      <div class="recommendation-card ${deal.type}-card">
+                          <h3 class="item-name">${deal.item.name}</h3>
+                          <div class="recommendation-reason">${deal.reason}</div>
+                          <div class="recommendation-score">Resonance: ${Math.round(deal.score * 100)}%</div>
+                      </div>
+                  `).join('');
+              });
+      }
+</script>

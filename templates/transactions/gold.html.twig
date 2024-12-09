@@ -1,0 +1,91 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gold Management - Mystic Mart™{% endblock %}
+
+{% block stylesheets %}
+<style>
+    .gold-management {
+        margin: 2em auto;
+        max-width: 600px;
+        background: rgba(10, 10, 10, 0.95);
+        padding: 3em;
+        border: 1px solid #333;
+    }
+
+    .current-balance {
+        font-family: 'UnifrakturMaguntia', cursive;
+        font-size: 2em;
+        color: #ffd700;
+        text-align: center;
+        margin-bottom: 1em;
+        text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    }
+
+    .add-gold-form {
+        margin-top: 2em;
+    }
+
+    .gold-input {
+        width: 100%;
+        padding: 1em;
+        background: rgba(20, 20, 20, 0.7);
+        border: 1px solid #ffd700;
+        color: #d4d4d4;
+        font-family: 'Crimson Text', serif;
+        margin-bottom: 1em;
+    }
+
+    .submit-gold {
+        width: 100%;
+        padding: 1em;
+        background: #8b0000;
+        color: #ffd700;
+        border: none;
+        font-family: 'UnifrakturMaguntia', cursive;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .submit-gold:hover {
+        background: #660000;
+        box-shadow: 0 0 15px rgba(139, 0, 0, 0.5);
+    }
+
+    .transaction-history {
+        margin-top: 3em;
+        border-top: 1px solid #333;
+        padding-top: 2em;
+    }
+
+    .transaction-entry {
+        padding: 1em;
+        border-left: 3px solid #8b0000;
+        margin-bottom: 1em;
+        background: rgba(20, 20, 20, 0.7);
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="gold-management">
+    <div class="current-balance">
+        Current Balance: {{ app.user.goldBalance }} gold
+    </div>
+
+    <form class="add-gold-form" action="{{ path('add_gold') }}" method="POST">
+        <input type="hidden" name="_token" value="{{ csrf_token('gold_transaction') }}">
+        <input type="number" name="amount" class="gold-input" min="1" max="1000000" placeholder="Amount of gold to add" required>
+        <button type="submit" class="submit-gold">Materialize Gold</button>
+    </form>
+
+    <div class="transaction-history">
+        <h2>Recent Transactions</h2>
+        {% for transaction in transactions %}
+            <div class="transaction-entry">
+                <div>Amount: {{ transaction.amount }} gold</div>
+                <div>Date: {{ transaction.timestamp|date('Y-m-d H:i:s') }}</div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
